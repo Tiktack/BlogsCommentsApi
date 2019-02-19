@@ -12,10 +12,9 @@ namespace DataLayer
         public IPostRepository PostRepository { get; set; }
         private bool _disposed;
 
-        public UnitOfWork(/*ICommentRepository commentRepository,*/ IPostRepository postRepository, BaseContext context)
+        public UnitOfWork(ICommentRepository commentRepository, IPostRepository postRepository, BaseContext context)
         {
-            //CommentRepository = commentRepository;
-            CommentRepository = null;
+            CommentRepository = commentRepository;
             PostRepository = postRepository;
             _context = context;
         }

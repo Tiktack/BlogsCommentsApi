@@ -64,7 +64,7 @@ namespace Travix
         {
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            //services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<IAppSettings, AppSettings>();
         }

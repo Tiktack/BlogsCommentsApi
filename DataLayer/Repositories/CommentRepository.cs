@@ -1,45 +1,50 @@
 ﻿using DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DataLayer.Interfaces.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Repositories
 {
-    //public class CommentRepository : ICommentRepository
-    //{
-    //    private readonly BaseContext _context;
+    public class CommentRepository : ICommentRepository
+    {
+        private readonly BaseContext _context;
 
-    //    public CommentRepository(BaseContext context)
-    //    {
-    //        _context = context;
-    //    }
+        public CommentRepository(BaseContext context)
+        {
+            _context = context;
+        }
 
-    //    public async Task Insert(Comment item)
-    //    {
-    //         await _context.Comments.AddAsync(item);
-    //    }
+        public async Task Insert(Comment item)
+        {
+            await _context.Comments.AddAsync(item);
+            await _context.SaveChangesAsync();
+        }
 
-    //    public Task Delete(int id)
-    //    {
-    //        var comment = _context.Comments.Find(id);
-    //        _context.Comments.Remove(comment);
-    //    }
+        public async Task Delete(int id)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment == null)
+                throw new ArgumentException($"Can not find comment with id {id}");
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+        }
 
-    //    public Task Update(Comment item)
-    //    {
-    //        _context.Entry(item).State = EntityState.Modified;
-    //    }
+        public async Task Update(Comment item)
+        {
+            _context.Entry(item).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
 
-    //    public Task<Post> GetById(int id)
-    //    {
-    //        return _context.Comments.Find(id);
-    //    }
+        public async Task<Comment> GetById(int id)
+        {
+            return await _context.Comments.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+        }
 
-    //    public Task<List<Post>> GetAll()
-    //    {
-    //        return _context.Comments.ToList();
-    //    }
-    //}
+        public async Task<IEnumerable<Comment>> GetAll()
+        {
+            return await _context.Comments.AsNoTracking().ToListAsync();
+        }
+    }
 }
