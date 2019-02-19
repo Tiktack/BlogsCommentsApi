@@ -3,7 +3,7 @@ using DataLayer.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataLayer.Repositories
 {
@@ -15,32 +15,35 @@ namespace DataLayer.Repositories
         {
             _context = context;
         }
-        public void Insert(Post item)
+        public async Task Insert(Post item)
         {
-            _context.Posts.Add(item);
+            await _context.Posts.AddAsync(item);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var post = _context.Posts.Find(id);
+            var post = await _context.Posts.FindAsync(id);
             if (post == null)
                 throw new ArgumentException($"Can not find post with id {id}");
             _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Post item)
+        public async Task Update(Post item)
         {
             _context.Entry(item).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
-        public Post GetById(int id)
+        public async Task<Post> GetById(int id)
         {
-            return _context.Posts.AsNoTracking().SingleOrDefault(x => x.Id == id);
+            return await _context.Posts.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public IEnumerable<Post> GetAll()
+        public async Task<IEnumerable<Post>> GetAll()
         {
-            return _context.Posts;
+            return await _context.Posts.AsNoTracking().ToListAsync();
         }
     }
 }

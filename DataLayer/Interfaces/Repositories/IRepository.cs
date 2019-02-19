@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DataLayer.Interfaces.Repositories
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity> where TEntity : IEntity
     {
-        void Insert(TEntity item);
-        void Delete(int id);
-        void Update(TEntity item);
-        TEntity GetById(int id);
-        IEnumerable<TEntity> GetAll();
+        Task Insert(TEntity item);
+        Task Delete(int id);
+        Task Update(TEntity item);
+        Task<TEntity> GetById(int id);
+        Task<IEnumerable<TEntity>> GetAll();
     }
 }

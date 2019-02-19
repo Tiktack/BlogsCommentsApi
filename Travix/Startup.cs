@@ -59,18 +59,12 @@ namespace Travix
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test API V1");
             });
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action}/{id?}");
-            });
         }
         private static void RegisterDependencies(IServiceCollection services)
         {
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<ICommentRepository, CommentRepository>();
+            //services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<IAppSettings, AppSettings>();
         }

@@ -2,6 +2,7 @@
 using DataLayer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BusinessLayer
 {
@@ -14,38 +15,35 @@ namespace BusinessLayer
             _unitOfWork = unitOfWork;
         }
 
-        public void AddPost(Post post)
+        public async Task AddPost(Post post)
         {
-            _unitOfWork.PostRepository.Insert(post);
-            _unitOfWork.Save();
+            await _unitOfWork.PostRepository.Insert(post);
         }
 
-        public Post GetPost(int id)
+        public async Task<Post> GetPost(int id)
         {
             if (id < 1)
                 throw new ArgumentException();
-            return _unitOfWork.PostRepository.GetById(id) ?? throw new ArgumentException();
+            return await _unitOfWork.PostRepository.GetById(id) ?? throw new ArgumentException();
         }
 
-        public IEnumerable<Post> GetAllPosts()
+        public async Task<IEnumerable<Post>> GetAllPosts()
         {
-            return _unitOfWork.PostRepository.GetAll();
+            return await _unitOfWork.PostRepository.GetAll();
         }
 
-        public void UpdatePost(Post post, int id)
+        public async Task UpdatePost(Post post, int id)
         {
-            var item = _unitOfWork.PostRepository.GetById(id);
+            var item = await _unitOfWork.PostRepository.GetById(id);
             if (item == null)
                 throw new ArgumentException($"Can not find post with id = {id}");
             post.Id = id;
-            _unitOfWork.PostRepository.Update(post);
-            _unitOfWork.Save();
+            await _unitOfWork.PostRepository.Update(post);
         }
 
-        public void DeletePost(int id)
+        public async Task DeletePost(int id)
         {
-            _unitOfWork.PostRepository.Delete(id);
-            _unitOfWork.Save();
+            await _unitOfWork.PostRepository.Delete(id);
         }
     }
 }

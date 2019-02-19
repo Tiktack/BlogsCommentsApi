@@ -1,32 +1,31 @@
 ﻿using DataLayer.Interfaces;
 using DataLayer.Interfaces.Repositories;
 using System;
+using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public sealed class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly BaseContext _context;
         public ICommentRepository CommentRepository { get; set; }
         public IPostRepository PostRepository { get; set; }
         private bool _disposed;
 
-        public UnitOfWork(ICommentRepository commentRepository, IPostRepository postRepository, BaseContext context)
+        public UnitOfWork(/*ICommentRepository commentRepository,*/ IPostRepository postRepository, BaseContext context)
         {
-            CommentRepository = commentRepository;
+            //CommentRepository = commentRepository;
+            CommentRepository = null;
             PostRepository = postRepository;
             _context = context;
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public ICommentRepository Comments() => CommentRepository;
-        public IPostRepository Posts() => PostRepository;
-
-        public virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (_disposed) return;
             if (disposing)

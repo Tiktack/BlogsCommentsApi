@@ -1,10 +1,10 @@
 ﻿using BusinessLayer;
+using Common;
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using Common;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+using System.Threading.Tasks;
 
 // ReSharper disable once IdentifierTypo
 namespace Travix.Controllers
@@ -26,37 +26,37 @@ namespace Travix.Controllers
 
         // GET: api/Post
         [HttpGet]
-        public IEnumerable<Post> Get()
+        public async Task<IEnumerable<Post>> Get()
         {
-            return _postService.GetAllPosts();
+            return await _postService.GetAllPosts();
         }
 
         // GET: api/Post/{id}
         [HttpGet("{id}")]
-        public Post Get(int id)
+        public async Task<Post> Get(int id)
         {
-            return _postService.GetPost(id);
+            return await _postService.GetPost(id);
         }
 
         // POST: api/Post
         [HttpPost]
-        public void Post([FromBody] Post item)
+        public async Task Post([FromBody] Post item)
         {
-            _postService.AddPost(item);
+            await _postService.AddPost(item);
         }
 
         // PUT: api/Post/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Post item)
+        public async Task Put(int id, [FromBody] Post item)
         {
-            _postService.UpdatePost(item, id);
+            await _postService.UpdatePost(item, id);
         }
 
         // DELETE: api/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _postService.DeletePost(id);
+            await _postService.DeletePost(id);
         }
     }
 }

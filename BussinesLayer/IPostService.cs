@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DataLayer.Entities;
 
 namespace BusinessLayer
 {
     public interface IPostService
     {
-        void AddPost(Post post);
-        Post GetPost(int id);
-        IEnumerable<Post> GetAllPosts();
-        void UpdatePost(Post post, int id);
-        void DeletePost(int id);
+        Task AddPost(Post post);
+        Task<Post> GetPost(int id);
+        Task<IEnumerable<Post>> GetAllPosts();
+        Task UpdatePost(Post post, int id);
+        Task DeletePost(int id);
     }
 }

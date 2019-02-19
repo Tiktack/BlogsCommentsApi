@@ -1,4 +1,5 @@
-﻿using DataLayer.Interfaces.Repositories;
+﻿using System.Threading.Tasks;
+using DataLayer.Interfaces.Repositories;
 
 namespace DataLayer.Interfaces
 {
@@ -6,8 +7,6 @@ namespace DataLayer.Interfaces
     {
         ICommentRepository CommentRepository { get; set; }
         IPostRepository PostRepository { get; set; }
-        ICommentRepository Comments();
-        IPostRepository Posts();
-        void Save();
+        Task SaveAsync();
     }
 }
