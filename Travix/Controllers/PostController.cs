@@ -12,7 +12,6 @@ using Travix.DTO;
 // ReSharper disable once IdentifierTypo
 namespace Travix.Controllers
 {
-    [ModelValidation]
     [ApiExceptionFilter]
     [Route("api/[controller]")]
     [ApiController]
