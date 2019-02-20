@@ -4,7 +4,10 @@ using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Travix.DTO;
 
 // ReSharper disable once IdentifierTypo
 namespace Travix.Controllers
@@ -17,39 +20,45 @@ namespace Travix.Controllers
     {
         private readonly IPostService _postService;
         private readonly ILogger<PostController> _logger;
+        private readonly IMapper _mapper;
 
-        public PostController(IPostService postService, ILogger<PostController> logger)
+        public PostController(IPostService postService, ILogger<PostController> logger, IMapper mapper)
         {
             _postService = postService;
             _logger = logger;
+            _mapper = mapper;
         }
 
         // GET: api/Post
         [HttpGet]
-        public async Task<IEnumerable<Post>> Get()
+        public async Task<IEnumerable<ViewPostDTO>> Get()
         {
-            return await _postService.GetAllPosts();
+            var posts = await _postService.GetAllPosts();
+            return posts.Select(post => _mapper.Map<ViewPostDTO>(post));
         }
 
         // GET: api/Post/{id}
         [HttpGet("{id}")]
-        public async Task<Post> Get(int id)
+        public async Task<ViewPostDTO> Get(int id)
         {
-            return await _postService.GetPost(id);
+            var post = await _postService.GetPost(id);
+            return _mapper.Map<ViewPostDTO>(post);
         }
 
         // POST: api/Post
         [HttpPost]
-        public async Task Post([FromBody] Post item)
+        public async Task Post([FromBody] InsertPostDTO item)
         {
-            await _postService.AddPost(item);
+            var post = _mapper.Map<Post>(item);
+            await _postService.AddPost(post);
         }
 
         // PUT: api/Post/5
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] Post item)
+        public async Task Put(int id, [FromBody] EditPostDTO item)
         {
-            await _postService.UpdatePost(item, id);
+            var post = _mapper.Map<Post>(item);
+            await _postService.UpdatePost(post, id);
         }
 
         // DELETE: api/5

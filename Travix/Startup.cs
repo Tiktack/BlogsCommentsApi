@@ -1,4 +1,5 @@
-﻿using BusinessLayer;
+﻿using AutoMapper;
+using BusinessLayer;
 using Common;
 using DataLayer;
 using DataLayer.Interfaces;
@@ -62,6 +63,7 @@ namespace Travix
         }
         private static void RegisterDependencies(IServiceCollection services)
         {
+            services.AddAutoMapper();
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ICommentRepository, CommentRepository>();

@@ -38,6 +38,8 @@ namespace BusinessLayer
             if (item == null)
                 throw new ArgumentException($"Can not find post with id = {id}");
             post.Id = id;
+            post.Author = item.Author;
+            post.DateTime = item.DateTime;
             await _unitOfWork.PostRepository.Update(post);
         }
 
